@@ -1,0 +1,13 @@
+{% extends 'layout/basic_site.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}Удаление пользователя{% endblock %}
+
+{% block content %}
+<h2>Удаление пользователя {{ object.username }}</h2>
+<form method="post">
+  {% csrf_token %}
+  {% bootstrap_button 'Удалить' %}
+</form>
+{% endblock %}

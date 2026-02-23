@@ -1,0 +1,41 @@
+{% extends 'layout/basic_site.html' %}
+
+{% load thumbnail %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+
+{% block content %}
+<h2>Профиль пользователя {{ user.username }}</h2>
+{% if user.first_name and user.last_name %}
+<p>Здравствуйте, {{ user.first_name }} {{ user.last_name }}!</p>
+{% else %}
+<p>Здравствуйте!</p>
+{% endif %}
+<h3>Ваши новости</h3>
+{% if newss %}
+<div class="vstack gap-3 my-4">
+    {% for news in newss %}
+    <div class="card">
+        {% url 'news_detail' rubric_pk=news.rubric.pk pk=news.pk as url %}
+        <div class="row p-3">
+            <a class="col-md-2" href="{{ url }}{{ all }}">
+                {% if news.image_news %}
+                <img class="img-fluid"
+                     src="{% thumbnail news.image_news 'default' %}">
+                {% else %}
+                <img class="img-fluid" src="{% static 'sportsman/empty.jpg' %}">
+                {% endif %}
+            </a>
+            <div class="col-md-10 card-body">
+                <h3 class="card-title"><a href="{{ url }}{{ all }}">{{ news.title }}</a></h3>
+                <div class="card-text mb-2">{{ news.content }}</div>
+                <p class="card-text text-end fst-italic">{{ news.created_at }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% bootstrap_pagination page url=keyword %}
+{% endif %}
+{% endblock %}

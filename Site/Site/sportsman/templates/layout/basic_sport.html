@@ -1,0 +1,71 @@
+{% load django_bootstrap5 %}
+{% load static%}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Все спортсмены{% endblock %} :: Спортсмены Республики Коми</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'sportsman/style.css' %}">
+    {% bootstrap_javascript %}
+  </head>
+  <body class="container-fluid">
+    <header class="mb-4">
+      <h1 class="display-1 text-center">Спортсмены</h1>
+    </header>
+    <nav class="row navbar navbar-expand-md bg-light">
+      <div class="col container">
+        <a class="navbar-brand" href="{% url 'home' %}">Главная</a>
+        <a class="navbar-brand" href="{% url 'index' %}">Тренерский состав</a>
+        <a class="navbar-brand" href="{% url 'compet' %}">Соревнования</a>
+        <button class="navbar-togger" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <div class="navbar-nav">
+            {% if user.is_authenticated %}
+            <div class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="{% url 'profile' %}">Профиль</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'profile_edit' %}">Изменить данные</a>
+                <a class="dropdown-item" href="{% url 'password_edit' %}">Изменить пароль</a>
+                <hr class="dropdown-divider">
+                <form class="px-3" method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  {% bootstrap_button 'Выйти' button_class='btn-danger' %}
+                </form>
+                <hr class="dropdown-divider">
+                <a class="dropdown-item" href="{% url 'profile_delete' %}">Удалить</a>
+              </div>
+            </div>
+            {% else %}
+            <a class="nav-link" href="{% url 'register' %}">Регистрация</a>
+            <a class="nav-link" href="{% url 'login' %}">Вход</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="row">
+      <nav class="col-md-auto nav flex-column bg-light">
+        <span class="nav-link root">Присвоенные разряды</span>
+        <a class="nav-link" href="{% url 'sport' %}">Все спортсмены</a>
+        {% for category in categorys %}
+        <a class="nav-link" href="{% url 'category_sps' category.pk %}">{{ category.name_rank}}</a>
+        {% endfor %}
+        <a class="nav-link" href="{% url 'add' %}">Добавить</a>
+        <a class="nav-link root" href="{% url 'about' %}">О сайте</a>
+      </nav>
+      <main class="col py-2">
+        {% bootstrap_messages %}
+        {% block content %}
+        {% endblock %}
+      </main>
+    </div>
+    <footer class="mt-3">
+      <p class="text-end fst-italic">&copy; читатели.</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Сореанования</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'competitions/style_compet.css' %}">
+  </head>
+  <body>
+    <header>
+      <h1>Соревнования</h1>
+    </header>
+    <nav>
+      <a href="{% url 'home' %}">Главная</a>
+      <a href="{% url 'sport' %}">Спортсмены</a>
+      <a href="{% url 'index' %}">Тренерский состав</a>
+    </nav>
+    <main>
+    {% block content %}
+    {% endblock %}
+    </main>
+  </body>
+</html>

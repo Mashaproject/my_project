@@ -1,0 +1,38 @@
+{% extends "layout/basic_sport.html" %}
+
+{% load thumbnail %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block title %}{{ current_category.name_rank }}{% endblock %}
+
+{% block content %}
+<h2>Спортивный разряд: {{ current_category.name_rank }}</h2>
+{% if sps %}
+<div class="vstack gap-3 my-4">
+    {% for sp in sps %}
+    <div class="card">
+
+        <div class="row p-3">
+            <a class="col-md-2" href="{{ url }}{{ all }}">
+                {% if sp.image_sp %}
+                <img class="img-fluid"
+                     src="{% thumbnail sp.image_sp 'default' %}">
+                {% else %}
+                <img class="img-fluid" src="{% static 'sportsman/empty1.jpg' %}">
+                {% endif %}
+            </a>
+            <div class="col-md-10 card-body">
+                <h3 class="card-title mb-2"><strong>Имя: </strong>{{sp.name}}</h3>
+                <div class="card-text mb-2"><strong>Возраст: </strong>{{sp.age}}</div>
+                <div class="card-text mb-2"><strong>Город: </strong>{{sp.town}}</div>
+                <div class="card-text mb-2"><strong>Разряд: </strong>{{ sp.category.name_rank }}</div>
+                <div class="card-text mb-2"><strong>Тренерский состав: </strong>{{sp.couches}}</div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endif %}
+{% endblock %}
